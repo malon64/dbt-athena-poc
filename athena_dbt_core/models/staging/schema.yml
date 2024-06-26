@@ -1,0 +1,34 @@
+version: 2
+
+models:
+  - name: stg_client
+    description: "Staging table for client data"
+    columns:
+      - name: client_id
+        description: "The primary key for this table"
+        tests:
+          - not_null
+      - name: client_name
+        description: "The name of the client"
+        tests:
+          - not_null
+      - name: join_date
+        description: "The date the client joined"
+        tests:
+          - not_null
+
+  - name: stg_product
+    description: "Staging table for product data"
+    columns:
+      - name: product_id
+        description: "The primary key for this table"
+        tests:
+          - not_null
+      - name: product_name
+        description: "The name of the product"
+        tests:
+          - not_null
+      - name: price
+        description: "The price of the product"
+        tests:
+          - not_null

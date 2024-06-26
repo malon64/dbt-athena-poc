@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: clean_client
+    description: "Cleaned table for client data with technical and functional quality checks"
+    columns:
+      - name: client_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: client_name
+        description: "The name of the client"
+        data_tests:
+          - not_null
+      - name: join_date
+        description: "The date the client joined"
+        data_tests:
+          - not_null
+
+  - name: clean_product
+    description: "Cleaned table for product data with technical and functional quality checks"
+    columns:
+      - name: product_id
+        description: "The primary key for this table"
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "The name of the product"
+        tests:
+          - not_null
+      - name: price
+        description: "The price of the product"
+        tests:
+          - not_null

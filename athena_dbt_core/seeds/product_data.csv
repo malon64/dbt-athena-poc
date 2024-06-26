@@ -1,0 +1,10 @@
+product_id,product_name,price
+1,Product X,99.99
+2,Product Y,199.99
+3,Product Z,299.99
+3,Product Z Duplicate,299.99
+4,Product W,
+5,Product V,499.99
+6,Product U,599.99
+6,Product U Duplicate,599.99
+7,,
