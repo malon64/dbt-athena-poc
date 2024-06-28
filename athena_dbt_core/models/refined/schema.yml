@@ -6,31 +6,84 @@ models:
     columns:
       - name: client_id
         description: "The primary key for this table"
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: client_name
         description: "The name of the client"
         data_tests:
           - not_null
+          - name_format:
+              column_name: client_name
       - name: join_date
         description: "The date the client joined"
         data_tests:
           - not_null
+          - date_format:
+              column_name: join_date
+      - name: email
+        description: "The email of the client"
 
   - name: clean_product
     description: "Cleaned table for product data with technical and functional quality checks"
     columns:
       - name: product_id
         description: "The primary key for this table"
-        tests:
+        data_tests:
           - unique
           - not_null
       - name: product_name
         description: "The name of the product"
-        tests:
+        data_tests:
+          - not_null
+          - name_format:
+              column_name: product_name
+      - name: client_id
+        description: "Foreign key linking to client"
+        data_tests:
+          - not_null
+      - name: product_date
+        description: "The date of the product"
+        data_tests:
+          - not_null
+          - date_format:
+              column_name: product_date
+      - name: price
+        description: "The price of the product"
+        data_tests:
+          - not_null
+          - numeric_format:
+              column_name: price
+
+  - name: joined_product_client
+    description: "Table joining product and client data"
+    columns:
+      - name: product_id
+        description: "The primary key for the product"
+        data_tests:
+          - unique
+          - not_null
+      - name: product_name
+        description: "The name of the product"
+        data_tests:
+          - not_null
+      - name: client_id
+        description: "Foreign key linking to client"
+        data_tests:
+          - not_null
+      - name: client_name
+        description: "The name of the client"
+        data_tests:
+          - not_null
+      - name: product_date
+        description: "The date of the product"
+        data_tests:
+          - not_null
+      - name: join_date
+        description: "The date the client joined"
+        data_tests:
           - not_null
       - name: price
         description: "The price of the product"
-        tests:
+        data_tests:
           - not_null

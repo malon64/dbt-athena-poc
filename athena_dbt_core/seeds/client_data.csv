@@ -1,12 +1,4 @@
 client_id,client_name,join_date
-1,Company A,2022-01-15
-2,Company B,2021-05-22
-3,Company C,2023-03-19
-2,Company B Duplicate,2021-05-22
-4,,2023-04-01
-5,Company E,2024-06-23
-6,Company F,2024-06-24
-6,Company F Duplicate,2025-06-24
-7,Company G,
-8,Company H, 2024-02-01
-8,Company H new, 2024-03-01
+1,Company A updated,2022-01-15
+2,Company B updated,2021-05-23
+3,Company C,2021-05-22

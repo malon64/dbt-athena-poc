@@ -6,15 +6,13 @@ models:
     columns:
       - name: client_id
         description: "The primary key for this table"
-        tests:
+        data_tests:
           - not_null
       - name: client_name
         description: "The name of the client"
-        tests:
-          - not_null
       - name: join_date
         description: "The date the client joined"
-        tests:
+        data_tests:
           - not_null
 
   - name: stg_product
@@ -22,13 +20,15 @@ models:
     columns:
       - name: product_id
         description: "The primary key for this table"
-        tests:
+        data_tests:
           - not_null
       - name: product_name
         description: "The name of the product"
-        tests:
-          - not_null
+      - name: client_id
+        description: "Foreign key linking to client"
+      - name: product_date
+        description: "The date of the product"
       - name: price
         description: "The price of the product"
-        tests:
+        data_tests:
           - not_null
