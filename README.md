@@ -1,100 +1,80 @@
-# DBT + Athena Incremental Loading PoC
+# DBT and Dagster Project on AWS
 
-This PoC demonstrates how to use DBT with AWS Athena for incremental data loading, transformations, and data quality checks.
+This project is divided into three parts to set up and deploy a data pipeline using DBT and Dagster on AWS ECS with Fargate. The three parts are:
+
+1. **static_infra**: Sets up the database and S3 bucket required for the project.
+2. **athena_dbt_core**: Contains the DBT code for loading and transforming data, along with a Dagster project to orchestrate the DBT pipeline.
+3. **ecs_infra**: Dockerizes the `athena_dbt_core` project and deploys it on AWS ECS.
+
+## Prerequisites
+
+- **AWS CLI** installed and configured with appropriate permissions.
+- **Terraform** installed.
+- **Python 3.10** installed.
+- **Docker** installed.
 
 ## Project Structure
 
+- `static_infra/`: Contains Terraform configuration for setting up AWS Athena and S3 bucket.
+- `athena_dbt_core/`: Contains DBT models and Dagster orchestration code.
+- `ecs_infra/`: Contains Terraform configuration for deploying the containerized DBT and Dagster project on ECS.
+
+## Setting Up the Environment
+
+1. **Create a Python Virtual Environment**
+
+    Navigate to the root directory of the project and create a virtual environment:
+
+    ```bash
+    python3.10 -m venv dbt-env
+    source dbt-env/bin/activate  # On Windows use `dbt-env\Scripts\activate`
+    ```
+
+2. **Install DBT and Dagster**
+
+    With the virtual environment activated, navigate to the `athena_dbt_core` directory and install the required packages:
+
+    ```bash
+    cd athena_dbt_core
+    pip install -r requirements.txt
+    ```
+
+## Deployment Steps
+
+### 1. Deploy Static Infrastructure
+
+Navigate to the `static_infra` directory and follow the steps outlined in its `README.md` to set up the AWS Athena database and S3 bucket.
+
+```bash
+cd static_infra
+terraform init
+terraform apply -var-file="../terraform.tfvars"
 ```
-project-root/
-├── static_infra/
-│ └── main.tf
-├── athena_dbt_core/
-│ ├── dbt_project.yml
-│ ├── models/
-│ │ ├── staging/
-│ │ │ ├── stg_client.sql
-│ │ │ ├── stg_product.sql
-│ │ │ └── schema.yml
-│ │ └── refined/
-│ │ ├── clean_client.sql
-│ │ ├── clean_product.sql
-│ │ ├── joined_product_client.sql
-│ │ └── schema.yml
-│ ├── seeds/
-│ │ ├── client_data.csv
-│ │ └── product_data.csv
-│ ├── profiles.yml
-│ └── macros/
-│ ├── name_format.sql
-│ ├── date_format.sql
-│ └── numeric_format.sql
+### 2. Configure and Test DBT and Dagster
+
+Navigate to the athena_dbt_core directory to configure and test the DBT models and Dagster orchestration. Refer to the `README.md` in athena_dbt_core for detailed instructions.
+
+```bash
+cd athena_dbt_core
+# Follow the instructions in the athena_dbt_core README.md
 ```
 
-## Steps to Run the Project with Incremental Loading
+### 3. Deploy the Containerized Application on ECS
 
-### Step 1: Set Up Infrastructure
+Navigate to the ecs_infra directory and follow the steps outlined in its `README.md` to build the Docker image and deploy it on ECS.
 
-1. Navigate to the `static_infra` directory:
-    ```bash
-    cd static_infra
-    ```
+```bash
+cd ecs_infra
+terraform init
+terraform apply -var-file="../terraform.tfvars"
+```
 
-2. Initialize and apply the Terraform configuration:
-    ```bash
-    terraform init
-    terraform apply
-    ```
+## Further Details
 
-### Step 2: Set Up DBT Environment
+For more detailed instructions on each part of the project, please refer to the `README.md` files located in each respective directory:
 
-1. Create a virtual environment:
-    ```bash
-    python3 -m venv dbt-env
-    source dbt-env/bin/activate
-    ```
+[Static Infrastructure](./static_infra/README.md)
 
-2. Install DBT and the Athena adapter:
-    ```bash
-    pip install dbt-core dbt-athena-community
-    ```
+[DBT Project with Dagster orchestration](./athena_dbt_core/README.md)
 
-3. Navigate to the `athena_dbt_core` directory:
-    ```bash
-    cd ../athena_dbt_core
-    ```
-
-4. Configure the DBT profile in `profiles.yml`:
-    ```yaml
-    my_dbt_project:
-      target: dev
-      outputs:
-        dev:
-          type: athena
-          region_name: eu-west-1
-          s3_staging_dir: s3://athena-results-bucket/staging/
-          schema: dbt_database
-          database: awsdatacatalog
-          aws_profile: default
-          work_group: primary
-    ```
-
-### Step 3: Run DBT Models
-
-1. **Seed the Data**:
-    ```bash
-    dbt seed
-    ```
-
-2. **Run Full Refresh**:
-    ```bash
-    dbt run --full-refresh
-    ```
-
-3. **Update Data**: Modify `seeds/client_data.csv` and `seeds/product_data.csv` to add new rows or update existing ones.
-
-4. **Run Incremental Update**:
-    ```bash
-    dbt run
-    ```
-
-By following these steps, you will be able to run the project with incremental data loading, ensuring that updates are applied efficiently and data quality checks are enforced.
+[Dynamic infrastructure](./ecs_infra/README.md)

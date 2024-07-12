@@ -1,3 +1,22 @@
 dbt-env/
 
 logs/
+
+tmp*/
+
+
+static_infra/.terraform
+static_infra/.terraform.lock.hcl
+static_infra/terraform.tfstate*
+
+athena_dbt_core/orchestration/tmp*
+athena_dbt_core/orchestration/orchestration/__pycache__
+athena_dbt_core/.user.yml
+athena_dbt_core/target/
+athena_dbt_core/dbt_packages/
+athena_dbt_core/logs/
+
+ecs_infra/.terraform
+ecs_infra/.terraform.lock.hcl
+ecs_infra/terraform.tfstate*
+
