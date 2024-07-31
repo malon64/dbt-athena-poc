@@ -4,7 +4,8 @@
 set -e
 
 # Variables
-ECR_REPO_URI=$1
+ECR_REPO_APP=$1
+ECR_REPO_USER_CODE=$2
 REGION="eu-west-1"
 
 # Check if Docker is available
@@ -17,13 +18,17 @@ fi
 export DOCKER_BUILDKIT=0
 
 # Authenticate Docker to ECR
-aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REPO_URI
+aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REPO_APP
+aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REPO_USER_CODE
 
-# Build the Docker image
-docker build -t dagster-dbt-app ../athena_dbt_core
+# Build the Docker images
+docker build -t dagster-app:latest -f ../athena_dbt_core/Dockerfile_dagster ../athena_dbt_core
+docker build -t dagster-user-code:latest -f ../athena_dbt_core/Dockerfile_code ../athena_dbt_core
 
-# Tag the Docker image
-docker tag dagster-dbt-app:latest $ECR_REPO_URI:latest
+# Tag the Docker images
+docker tag dagster-app:latest $ECR_REPO_APP:latest
+docker tag dagster-user-code:latest $ECR_REPO_USER_CODE:latest
 
-# Push the Docker image to ECR
-docker push $ECR_REPO_URI:latest
+# Push the Docker images to ECR
+docker push $ECR_REPO_APP:latest
+docker push $ECR_REPO_USER_CODE:latest

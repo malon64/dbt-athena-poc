@@ -1,0 +1,521 @@
+Sending build context to Docker daemon    498kB
+Step 1/7 : FROM python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/7 : RUN pip install     dagster     dagster-graphql     dagster-webserver     dagster-postgres     dagster-docker
+ ---> Using cache
+ ---> d34f951635a2
+Step 3/7 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 73413c59a314
+Step 4/7 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 145a831b521b
+Step 5/7 : COPY orchestration/dagster.yaml orchestration/workspace.yaml $DAGSTER_HOME
+ ---> Using cache
+ ---> 03813ff35d14
+Step 6/7 : WORKDIR $DAGSTER_HOME
+ ---> Using cache
+ ---> 9c4a4c22c66b
+Step 7/7 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 5177c5d0ab2b
+Successfully built 5177c5d0ab2b
+Successfully tagged athena_dbt_core-dagster_webserver:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+23c641fed874: Waiting
+88b4aad200e0: Waiting
+efc2b5ad9eec: Waiting
+f89b0a6e967d: Waiting
+4dc6a07c2df3: Waiting
+b48f0f0bd47e: Waiting
+30b50747d576: Waiting
+78ac10e8e8cf: Waiting
+78ac10e8e8cf: Waiting
+23c641fed874: Waiting
+88b4aad200e0: Waiting
+efc2b5ad9eec: Waiting
+f89b0a6e967d: Waiting
+4dc6a07c2df3: Waiting
+b48f0f0bd47e: Waiting
+30b50747d576: Waiting
+efc2b5ad9eec: Waiting
+f89b0a6e967d: Waiting
+4dc6a07c2df3: Waiting
+b48f0f0bd47e: Waiting
+30b50747d576: Waiting
+78ac10e8e8cf: Waiting
+23c641fed874: Waiting
+88b4aad200e0: Waiting
+88b4aad200e0: Pushed
+f89b0a6e967d: Pushed
+4dc6a07c2df3: Pushed
+23c641fed874: Pushed
+b48f0f0bd47e: Pushed
+30b50747d576: Pushed
+efc2b5ad9eec: Pushed
+78ac10e8e8cf: Pushed
+dagster_webserver: digest: sha256:5177c5d0ab2b782fbe52766764a41ddaa2c2be2f007e75fa25c8302cbd8a1597 size: 2055
+Sending build context to Docker daemon  498.4kB
+Step 1/7 : FROM python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/7 : RUN pip install     dagster     dagster-graphql     dagster-webserver     dagster-postgres     dagster-docker
+ ---> Using cache
+ ---> d34f951635a2
+Step 3/7 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 73413c59a314
+Step 4/7 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 145a831b521b
+Step 5/7 : COPY orchestration/dagster.yaml orchestration/workspace.yaml $DAGSTER_HOME
+ ---> Using cache
+ ---> 03813ff35d14
+Step 6/7 : WORKDIR $DAGSTER_HOME
+ ---> Using cache
+ ---> 9c4a4c22c66b
+Step 7/7 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 5177c5d0ab2b
+Successfully built 5177c5d0ab2b
+Successfully tagged athena_dbt_core-dagster_daemon:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+b48f0f0bd47e: Waiting
+4dc6a07c2df3: Waiting
+88b4aad200e0: Waiting
+f89b0a6e967d: Waiting
+30b50747d576: Waiting
+23c641fed874: Waiting
+efc2b5ad9eec: Waiting
+78ac10e8e8cf: Waiting
+30b50747d576: Waiting
+23c641fed874: Waiting
+efc2b5ad9eec: Waiting
+78ac10e8e8cf: Waiting
+b48f0f0bd47e: Waiting
+4dc6a07c2df3: Waiting
+88b4aad200e0: Waiting
+f89b0a6e967d: Waiting
+78ac10e8e8cf: Layer already exists
+b48f0f0bd47e: Layer already exists
+4dc6a07c2df3: Layer already exists
+88b4aad200e0: Layer already exists
+f89b0a6e967d: Layer already exists
+30b50747d576: Layer already exists
+23c641fed874: Layer already exists
+efc2b5ad9eec: Layer already exists
+dagster_daemon: digest: sha256:5177c5d0ab2b782fbe52766764a41ddaa2c2be2f007e75fa25c8302cbd8a1597 size: 2055
+Sending build context to Docker daemon  498.5kB
+Step 1/10 : FROM python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/10 : RUN pip install     dagster     dagster-postgres     dagster-docker     dagster-dbt     dbt-core     dbt-athena-community
+ ---> Using cache
+ ---> 567a7c64497b
+Step 3/10 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 47d18f497dfa
+Step 4/10 : ENV PYTHONPATH=/opt/dagster/app/orchestration
+ ---> Using cache
+ ---> 077527b65f74
+Step 5/10 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 93d8830e4b75
+Step 6/10 : WORKDIR /opt/dagster/app
+ ---> Using cache
+ ---> f670277eb9fd
+Step 7/10 : COPY . /opt/dagster/app
+ ---> 04f585c042d6
+Step 8/10 : EXPOSE 4000
+ ---> Running in 354ef12fb603
+ ---> Removed intermediate container 354ef12fb603
+ ---> 31387b1cfe7d
+Step 9/10 : CMD ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-f", "orchestration/orchestration/definitions.py"]
+ ---> Running in b892320bea56
+ ---> Removed intermediate container b892320bea56
+ ---> 8425666a9d88
+Step 10/10 : LABEL com.docker.compose.image.builder=classic
+ ---> Running in 7b617ad7b6ff
+ ---> Removed intermediate container 7b617ad7b6ff
+ ---> a0035a5d82b1
+Successfully built a0035a5d82b1
+Successfully tagged athena_dbt_core-dagster_user_code:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+23c641fed874: Waiting
+55d988980df9: Waiting
+b48f0f0bd47e: Waiting
+30b50747d576: Waiting
+efc2b5ad9eec: Waiting
+794817835895: Waiting
+4dc6a07c2df3: Waiting
+6b7495b4afac: Waiting
+a1da816bb6fa: Waiting
+23c641fed874: Waiting
+55d988980df9: Waiting
+794817835895: Waiting
+4dc6a07c2df3: Waiting
+6b7495b4afac: Waiting
+a1da816bb6fa: Waiting
+b48f0f0bd47e: Waiting
+30b50747d576: Waiting
+efc2b5ad9eec: Waiting
+23c641fed874: Layer already exists
+55d988980df9: Waiting
+b48f0f0bd47e: Layer already exists
+30b50747d576: Layer already exists
+efc2b5ad9eec: Layer already exists
+794817835895: Waiting
+4dc6a07c2df3: Layer already exists
+6b7495b4afac: Waiting
+a1da816bb6fa: Waiting
+a1da816bb6fa: Pushed
+55d988980df9: Pushed
+794817835895: Pushed
+6b7495b4afac: Pushed
+dagster_user_code: digest: sha256:a0035a5d82b16da33476358245c5af3ef65bea9780fbd467f6a09a6461f77281 size: 2272
+All Docker images have been built and pushed successfully.
+Sending build context to Docker daemon  498.9kB
+Step 1/7 : FROM --platform=linux/x86_64 python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/7 : RUN pip install     dagster     dagster-graphql     dagster-webserver     dagster-postgres     dagster-docker
+ ---> Using cache
+ ---> d34f951635a2
+Step 3/7 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 73413c59a314
+Step 4/7 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 145a831b521b
+Step 5/7 : COPY orchestration/dagster.yaml orchestration/workspace.yaml $DAGSTER_HOME
+ ---> Using cache
+ ---> 03813ff35d14
+Step 6/7 : WORKDIR $DAGSTER_HOME
+ ---> Using cache
+ ---> 9c4a4c22c66b
+Step 7/7 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 5177c5d0ab2b
+Successfully built 5177c5d0ab2b
+Successfully tagged athena_dbt_core-dagster_webserver:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+30b50747d576: Waiting
+4dc6a07c2df3: Waiting
+78ac10e8e8cf: Waiting
+88b4aad200e0: Waiting
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+f89b0a6e967d: Waiting
+23c641fed874: Waiting
+f89b0a6e967d: Waiting
+23c641fed874: Waiting
+30b50747d576: Waiting
+4dc6a07c2df3: Waiting
+78ac10e8e8cf: Waiting
+88b4aad200e0: Waiting
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+b48f0f0bd47e: Waiting
+f89b0a6e967d: Waiting
+23c641fed874: Waiting
+30b50747d576: Waiting
+4dc6a07c2df3: Waiting
+78ac10e8e8cf: Waiting
+88b4aad200e0: Waiting
+efc2b5ad9eec: Waiting
+f89b0a6e967d: Pushed
+4dc6a07c2df3: Pushed
+88b4aad200e0: Pushed
+23c641fed874: Pushed
+b48f0f0bd47e: Pushed
+30b50747d576: Pushed
+efc2b5ad9eec: Pushed
+78ac10e8e8cf: Pushed
+dagster_webserver: digest: sha256:5177c5d0ab2b782fbe52766764a41ddaa2c2be2f007e75fa25c8302cbd8a1597 size: 2055
+Sending build context to Docker daemon    499kB
+Step 1/7 : FROM --platform=linux/x86_64 python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/7 : RUN pip install     dagster     dagster-graphql     dagster-webserver     dagster-postgres     dagster-docker
+ ---> Using cache
+ ---> d34f951635a2
+Step 3/7 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 73413c59a314
+Step 4/7 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 145a831b521b
+Step 5/7 : COPY orchestration/dagster.yaml orchestration/workspace.yaml $DAGSTER_HOME
+ ---> Using cache
+ ---> 03813ff35d14
+Step 6/7 : WORKDIR $DAGSTER_HOME
+ ---> Using cache
+ ---> 9c4a4c22c66b
+Step 7/7 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 5177c5d0ab2b
+Successfully built 5177c5d0ab2b
+Successfully tagged athena_dbt_core-dagster_daemon:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+b48f0f0bd47e: Waiting
+f89b0a6e967d: Waiting
+30b50747d576: Waiting
+4dc6a07c2df3: Waiting
+23c641fed874: Waiting
+78ac10e8e8cf: Waiting
+88b4aad200e0: Waiting
+efc2b5ad9eec: Waiting
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+f89b0a6e967d: Waiting
+30b50747d576: Waiting
+4dc6a07c2df3: Waiting
+23c641fed874: Waiting
+78ac10e8e8cf: Waiting
+88b4aad200e0: Waiting
+efc2b5ad9eec: Layer already exists
+b48f0f0bd47e: Layer already exists
+f89b0a6e967d: Layer already exists
+30b50747d576: Layer already exists
+4dc6a07c2df3: Layer already exists
+23c641fed874: Layer already exists
+78ac10e8e8cf: Layer already exists
+88b4aad200e0: Layer already exists
+dagster_daemon: digest: sha256:5177c5d0ab2b782fbe52766764a41ddaa2c2be2f007e75fa25c8302cbd8a1597 size: 2055
+Sending build context to Docker daemon  499.1kB
+Step 1/10 : FROM --platform=linux/x86_64 python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/10 : RUN pip install     dagster     dagster-postgres     dagster-docker     dagster-dbt     dbt-core     dbt-athena-community
+ ---> Using cache
+ ---> 567a7c64497b
+Step 3/10 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 47d18f497dfa
+Step 4/10 : ENV PYTHONPATH=/opt/dagster/app/orchestration
+ ---> Using cache
+ ---> 077527b65f74
+Step 5/10 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 93d8830e4b75
+Step 6/10 : WORKDIR /opt/dagster/app
+ ---> Using cache
+ ---> f670277eb9fd
+Step 7/10 : COPY . /opt/dagster/app
+ ---> 0144d4c2085f
+Step 8/10 : EXPOSE 4000
+ ---> Running in a3be4b12b5fe
+ ---> Removed intermediate container a3be4b12b5fe
+ ---> 257a222871af
+Step 9/10 : CMD ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-f", "orchestration/orchestration/definitions.py"]
+ ---> Running in 9f760303005f
+ ---> Removed intermediate container 9f760303005f
+ ---> a3a0d692753d
+Step 10/10 : LABEL com.docker.compose.image.builder=classic
+ ---> Running in 1492322a2fd7
+ ---> Removed intermediate container 1492322a2fd7
+ ---> ccfa457abd0b
+Successfully built ccfa457abd0b
+Successfully tagged athena_dbt_core-dagster_user_code:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+23c641fed874: Waiting
+55d988980df9: Waiting
+a1da816bb6fa: Waiting
+30b50747d576: Waiting
+c446fc51bb31: Waiting
+6b7495b4afac: Waiting
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+4dc6a07c2df3: Waiting
+4dc6a07c2df3: Waiting
+6b7495b4afac: Waiting
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+c446fc51bb31: Waiting
+23c641fed874: Waiting
+55d988980df9: Waiting
+a1da816bb6fa: Waiting
+30b50747d576: Waiting
+4dc6a07c2df3: Layer already exists
+6b7495b4afac: Waiting
+efc2b5ad9eec: Layer already exists
+b48f0f0bd47e: Layer already exists
+c446fc51bb31: Waiting
+23c641fed874: Layer already exists
+55d988980df9: Waiting
+a1da816bb6fa: Waiting
+30b50747d576: Layer already exists
+a1da816bb6fa: Pushed
+55d988980df9: Pushed
+c446fc51bb31: Pushed
+6b7495b4afac: Pushed
+dagster_user_code: digest: sha256:ccfa457abd0b045e81d162e7587f54a5300037b05aff5db06b3b75efa98bce99 size: 2272
+All Docker images have been built and pushed successfully.
+Sending build context to Docker daemon  499.3kB
+Step 1/7 : FROM --platform=linux/x86_64 python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/7 : RUN pip install     dagster     dagster-graphql     dagster-webserver     dagster-postgres     dagster-docker
+ ---> Using cache
+ ---> d34f951635a2
+Step 3/7 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 73413c59a314
+Step 4/7 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 145a831b521b
+Step 5/7 : COPY orchestration/dagster.yaml orchestration/workspace.yaml $DAGSTER_HOME
+ ---> Using cache
+ ---> 03813ff35d14
+Step 6/7 : WORKDIR $DAGSTER_HOME
+ ---> Using cache
+ ---> 9c4a4c22c66b
+Step 7/7 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 5177c5d0ab2b
+Successfully built 5177c5d0ab2b
+Successfully tagged athena_dbt_core-dagster_webserver:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+23c641fed874: Waiting
+4dc6a07c2df3: Waiting
+88b4aad200e0: Waiting
+78ac10e8e8cf: Waiting
+f89b0a6e967d: Waiting
+30b50747d576: Waiting
+30b50747d576: Waiting
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+23c641fed874: Waiting
+4dc6a07c2df3: Waiting
+88b4aad200e0: Waiting
+78ac10e8e8cf: Waiting
+f89b0a6e967d: Waiting
+78ac10e8e8cf: Waiting
+f89b0a6e967d: Waiting
+30b50747d576: Waiting
+23c641fed874: Waiting
+4dc6a07c2df3: Waiting
+88b4aad200e0: Waiting
+4dc6a07c2df3: Pushed
+88b4aad200e0: Pushed
+23c641fed874: Pushed
+b48f0f0bd47e: Pushed
+f89b0a6e967d: Pushed
+30b50747d576: Pushed
+efc2b5ad9eec: Pushed
+78ac10e8e8cf: Pushed
+dagster_webserver: digest: sha256:5177c5d0ab2b782fbe52766764a41ddaa2c2be2f007e75fa25c8302cbd8a1597 size: 2055
+Sending build context to Docker daemon  499.4kB
+Step 1/7 : FROM --platform=linux/x86_64 python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/7 : RUN pip install     dagster     dagster-graphql     dagster-webserver     dagster-postgres     dagster-docker
+ ---> Using cache
+ ---> d34f951635a2
+Step 3/7 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 73413c59a314
+Step 4/7 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 145a831b521b
+Step 5/7 : COPY orchestration/dagster.yaml orchestration/workspace.yaml $DAGSTER_HOME
+ ---> Using cache
+ ---> 03813ff35d14
+Step 6/7 : WORKDIR $DAGSTER_HOME
+ ---> Using cache
+ ---> 9c4a4c22c66b
+Step 7/7 : LABEL com.docker.compose.image.builder=classic
+ ---> Using cache
+ ---> 5177c5d0ab2b
+Successfully built 5177c5d0ab2b
+Successfully tagged athena_dbt_core-dagster_daemon:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+23c641fed874: Waiting
+78ac10e8e8cf: Waiting
+88b4aad200e0: Waiting
+4dc6a07c2df3: Waiting
+f89b0a6e967d: Waiting
+30b50747d576: Waiting
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+4dc6a07c2df3: Waiting
+f89b0a6e967d: Waiting
+30b50747d576: Waiting
+efc2b5ad9eec: Waiting
+b48f0f0bd47e: Waiting
+23c641fed874: Waiting
+78ac10e8e8cf: Waiting
+88b4aad200e0: Waiting
+30b50747d576: Layer already exists
+efc2b5ad9eec: Layer already exists
+b48f0f0bd47e: Layer already exists
+23c641fed874: Layer already exists
+78ac10e8e8cf: Layer already exists
+88b4aad200e0: Layer already exists
+4dc6a07c2df3: Layer already exists
+f89b0a6e967d: Layer already exists
+dagster_daemon: digest: sha256:5177c5d0ab2b782fbe52766764a41ddaa2c2be2f007e75fa25c8302cbd8a1597 size: 2055
+Sending build context to Docker daemon  499.4kB
+Step 1/10 : FROM --platform=linux/x86_64 python:3.10-slim
+ ---> 38ced5e623fb
+Step 2/10 : RUN pip install     dagster     dagster-postgres     dagster-docker     dagster-dbt     dbt-core     dbt-athena-community
+ ---> Using cache
+ ---> 567a7c64497b
+Step 3/10 : ENV DAGSTER_HOME=/opt/dagster/dagster_home/
+ ---> Using cache
+ ---> 47d18f497dfa
+Step 4/10 : ENV PYTHONPATH=/opt/dagster/app/orchestration
+ ---> Using cache
+ ---> 077527b65f74
+Step 5/10 : RUN mkdir -p $DAGSTER_HOME
+ ---> Using cache
+ ---> 93d8830e4b75
+Step 6/10 : WORKDIR /opt/dagster/app
+ ---> Using cache
+ ---> f670277eb9fd
+Step 7/10 : COPY . /opt/dagster/app
+ ---> e5a5db78e92a
+Step 8/10 : EXPOSE 4000
+ ---> Running in f4c94a3da35f
+ ---> Removed intermediate container f4c94a3da35f
+ ---> a07b719fa1f0
+Step 9/10 : CMD ["dagster", "api", "grpc", "-h", "0.0.0.0", "-p", "4000", "-f", "orchestration/orchestration/definitions.py"]
+ ---> Running in b0582293b106
+ ---> Removed intermediate container b0582293b106
+ ---> 4ffaaeb13533
+Step 10/10 : LABEL com.docker.compose.image.builder=classic
+ ---> Running in 6f5db0b67be4
+ ---> Removed intermediate container 6f5db0b67be4
+ ---> eb5d2a1d85c6
+Successfully built eb5d2a1d85c6
+Successfully tagged athena_dbt_core-dagster_user_code:latest
+The push refers to repository [541526132178.dkr.ecr.eu-west-1.amazonaws.com/dagster-dbt-app]
+23c641fed874: Waiting
+a1da816bb6fa: Waiting
+30b50747d576: Waiting
+efc2b5ad9eec: Waiting
+204fad93deb0: Waiting
+6b7495b4afac: Waiting
+55d988980df9: Waiting
+4dc6a07c2df3: Waiting
+b48f0f0bd47e: Waiting
+b48f0f0bd47e: Waiting
+4dc6a07c2df3: Waiting
+6b7495b4afac: Waiting
+55d988980df9: Waiting
+23c641fed874: Waiting
+a1da816bb6fa: Waiting
+30b50747d576: Waiting
+efc2b5ad9eec: Waiting
+204fad93deb0: Waiting
+4dc6a07c2df3: Layer already exists
+b48f0f0bd47e: Layer already exists
+a1da816bb6fa: Waiting
+30b50747d576: Layer already exists
+efc2b5ad9eec: Layer already exists
+204fad93deb0: Waiting
+6b7495b4afac: Waiting
+55d988980df9: Waiting
+23c641fed874: Layer already exists
+55d988980df9: Waiting
+a1da816bb6fa: Pushed
+55d988980df9: Pushed
+204fad93deb0: Pushed
+6b7495b4afac: Pushed
+dagster_user_code: digest: sha256:eb5d2a1d85c66d9f7113eaa2f7ab45952161a18cb1f7aab1d13fe9872a8d7e81 size: 2272
+All Docker images have been built and pushed successfully.

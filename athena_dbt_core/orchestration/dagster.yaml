@@ -1,29 +1,73 @@
-local_artifact_storage:
-  module: dagster.core.storage.root
-  class: LocalArtifactStorage
-  config:
-    base_dir: "/opt/dagster/local/artifacts"
+---
+scheduler:
+  module: dagster.core.scheduler
+  class: DagsterDaemonScheduler
 
-compute_logs:
-  module: dagster.core.storage.local_compute_log_manager
-  class: LocalComputeLogManager
-  config:
-    base_dir: "/opt/dagster/local/compute_logs"
+run_coordinator:
+  module: dagster.core.run_coordinator
+  class: QueuedRunCoordinator
+
+
+run_launcher:
+  module: dagster_aws.ecs
+  class: EcsRunLauncher
+  config:  
+    # Optionally, specify the container name (defaults to 'run')
+    container_name: "dagster_run"
+
+    # Whether to include sidecars in the launched tasks
+    include_sidecars: true
+
+    # Use the current ECS task configuration for launching new tasks
+    use_current_ecs_task_config: true
+
+    secrets_tag: ""
 
 run_storage:
-  module: dagster.core.storage.runs
-  class: SqliteRunStorage
+  module: dagster_postgres.run_storage
+  class: PostgresRunStorage
   config:
-    base_dir: "/opt/dagster/local/runs"
-
-event_log_storage:
-  module: dagster.core.storage.event_log
-  class: SqliteEventLogStorage
-  config:
-    base_dir: "/opt/dagster/local/event_logs"
+    postgres_db:
+      hostname:
+        env: DB_HOST
+      username:
+        env: DB_USER
+      password:
+        env: DB_PASSWORD
+      db_name:
+        env: DB_NAME
+      port:
+        env: DB_PORT
 
 schedule_storage:
-  module: dagster.core.storage.schedules
-  class: SqliteScheduleStorage
+  module: dagster_postgres.schedule_storage
+  class: PostgresScheduleStorage
   config:
-    base_dir: "/opt/dagster/local/schedules"
+    postgres_db:
+      hostname:
+        env: DB_HOST
+      username:
+        env: DB_USER
+      password:
+        env: DB_PASSWORD
+      db_name:
+        env: DB_NAME
+      port:
+        env: DB_PORT
+
+event_log_storage:
+  module: dagster_postgres.event_log
+  class: PostgresEventLogStorage
+  config:
+    postgres_db:
+      hostname:
+        env: DB_HOST
+      username:
+        env: DB_USER
+      password:
+        env: DB_PASSWORD
+      db_name:
+        env: DB_NAME
+      port:
+        env: DB_PORT
+

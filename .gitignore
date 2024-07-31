@@ -1,14 +1,18 @@
+# Virtual environment
 dbt-env/
 
+# Dbt logs
 logs/
+
 
 tmp*/
 
-
+# Terraform temp files and states
 static_infra/.terraform
 static_infra/.terraform.lock.hcl
 static_infra/terraform.tfstate*
 
+# Dbt temp files and logs
 athena_dbt_core/orchestration/tmp*
 athena_dbt_core/orchestration/orchestration/__pycache__
 athena_dbt_core/.user.yml
@@ -16,6 +20,7 @@ athena_dbt_core/target/
 athena_dbt_core/dbt_packages/
 athena_dbt_core/logs/
 
+# Terraform temp files
 ecs_infra/.terraform
 ecs_infra/.terraform.lock.hcl
 ecs_infra/terraform.tfstate*
