@@ -6,7 +6,6 @@ setup(
     packages=find_packages(),
     install_requires=[
         "dagster",
-        "dagster-cloud",
         "dagster-dbt",
         "dbt-athena-adapter<1.9",
     ],

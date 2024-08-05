@@ -11,6 +11,7 @@ tmp*/
 static_infra/.terraform
 static_infra/.terraform.lock.hcl
 static_infra/terraform.tfstate*
+static_infra/.terraform.tfstate*
 
 # Dbt temp files and logs
 athena_dbt_core/orchestration/tmp*
@@ -24,4 +25,5 @@ athena_dbt_core/logs/
 ecs_infra/.terraform
 ecs_infra/.terraform.lock.hcl
 ecs_infra/terraform.tfstate*
+ecs_infra/.terraform.tfstate*
 
