@@ -66,7 +66,7 @@ Navigate to the ecs_infra directory and follow the steps outlined in its `README
 ```bash
 cd ecs_infra
 terraform init
-terraform apply"
+terraform apply
 ```
 
 ## Further Details
