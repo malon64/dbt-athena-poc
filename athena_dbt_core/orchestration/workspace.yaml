@@ -1,6 +1,10 @@
 load_from:
-  - grpc_server:
-      host: "dagster-usercode.main-cluster.local"
+ - grpc_server:
+# For an AWS deployment use this host and comment the other one
+#      host: "dagster-usercode.main-cluster.local"
+
+# For a local deployment use this host instead
+      host: "dagster_user_code"
       port: 4000
       location_name: "user_code_location"
 

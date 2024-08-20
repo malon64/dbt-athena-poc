@@ -48,7 +48,7 @@ Navigate to the `static_infra` directory and follow the steps outlined in its `R
 ```bash
 cd static_infra
 terraform init
-terraform apply -var-file="../terraform.tfvars"
+terraform apply
 ```
 ### 2. Configure and Test DBT and Dagster
 
@@ -66,7 +66,7 @@ Navigate to the ecs_infra directory and follow the steps outlined in its `README
 ```bash
 cd ecs_infra
 terraform init
-terraform apply -var-file="../terraform.tfvars"
+terraform apply"
 ```
 
 ## Further Details

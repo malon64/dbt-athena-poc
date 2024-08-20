@@ -1,4 +1,9 @@
-db_name     = "dagsterdb"
-db_username = "postgres_user"
-db_password = "postgres_password"
-app_name    = "dagster"
+# AWS Region
+aws_region = "eu-west-1"
+
+# Application-specific variables
+app_name        = "dagster-dbt-app"
+app_environment = "dev"
+
+# Put your IP here to get access to the webserver
+user_ip = "164.177.57.121"

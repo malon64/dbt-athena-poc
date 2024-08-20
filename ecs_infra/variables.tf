@@ -16,17 +16,7 @@ variable "app_environment" {
   default     = "dev"
 }
 
-variable "db_name" {
-  description = "The name of the database"
-  type        = string
-}
-
-variable "db_username" {
-  description = "The username for the database"
-  type        = string
-}
-
-variable "db_password" {
-  type    = string
-  default = "postgres_password"
+variable "user_ip" {
+  description = "User own IP to access the webserver from"
+  type = string
 }

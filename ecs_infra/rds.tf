@@ -9,9 +9,10 @@ resource "aws_db_instance" "dagster_postgres" {
   engine                 = "postgres"
   engine_version         = "13"
   instance_class         = "db.t3.micro"
-  db_name                = "dagsterdb"
-  username               = "postgres_user"
-  password               = var.db_password
+  db_name                = data.aws_ssm_parameter.db_name.value
+  username               = data.aws_ssm_parameter.db_username.value
+  password               = data.aws_ssm_parameter.db_password.value
+  port                   = data.aws_ssm_parameter.db_port.value
   db_subnet_group_name   = aws_db_subnet_group.dagster.name
   publicly_accessible    = true
   skip_final_snapshot    = true

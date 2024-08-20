@@ -7,21 +7,37 @@ run_coordinator:
   module: dagster.core.run_coordinator
   class: QueuedRunCoordinator
 
+### Use this run config for an AWS deployment
+# run_launcher:
+#   module: dagster_aws.ecs
+#   class: EcsRunLauncher
+#   config:
+#     # Optionally, specify the container name (defaults to 'run')
+#     container_name: "dagster_run"
 
+#     # Whether to include sidecars in the launched tasks
+#     include_sidecars: true
+
+#     # Use the current ECS task configuration for launching new tasks
+#     use_current_ecs_task_config: true
+#     secrets_tag: ""
+
+### Use this config for local deployment
 run_launcher:
-  module: dagster_aws.ecs
-  class: EcsRunLauncher
-  config:  
-    # Optionally, specify the container name (defaults to 'run')
-    container_name: "dagster_run"
-
-    # Whether to include sidecars in the launched tasks
-    include_sidecars: true
-
-    # Use the current ECS task configuration for launching new tasks
-    use_current_ecs_task_config: true
-
-    secrets_tag: ""
+  module: dagster_docker
+  class: DockerRunLauncher
+  config:
+    env_vars:
+      - DB_USERNAME
+      - DB_PASSWORD
+      - DB_NAME
+      - DB_PORT
+      - DB_HOST
+    network: docker_network
+    container_kwargs:
+      volumes: # Make docker client accessible to any launched containers as well
+        - /var/run/docker.sock:/var/run/docker.sock
+        - /tmp/io_manager_storage:/tmp/io_manager_storage
 
 run_storage:
   module: dagster_postgres.run_storage
@@ -31,7 +47,7 @@ run_storage:
       hostname:
         env: DB_HOST
       username:
-        env: DB_USER
+        env: DB_USERNAME
       password:
         env: DB_PASSWORD
       db_name:
@@ -47,7 +63,7 @@ schedule_storage:
       hostname:
         env: DB_HOST
       username:
-        env: DB_USER
+        env: DB_USERNAME
       password:
         env: DB_PASSWORD
       db_name:
@@ -63,7 +79,7 @@ event_log_storage:
       hostname:
         env: DB_HOST
       username:
-        env: DB_USER
+        env: DB_USERNAME
       password:
         env: DB_PASSWORD
       db_name:

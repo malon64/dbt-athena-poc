@@ -16,7 +16,6 @@ This directory contains the Terraform configuration files for setting up the sta
 - `variables.tf`: Variables for the Terraform configuration.
 - `outputs.tf`: Outputs for the Terraform configuration.
 - `terraform.tfvars`: Contains the value for the AWS region variable.
-- `README.md`: This file.
 
 ## Deployment Steps
 
@@ -31,10 +30,10 @@ This directory contains the Terraform configuration files for setting up the sta
 
 2. **Apply Terraform Configuration**
 
-    Apply the Terraform configuration to create the necessary AWS resources. Ensure that your `terraform.tfvars` file is located in the root directory of your project.
+    Apply the Terraform configuration to create the necessary AWS resources.
 
     ```bash
-    terraform apply -var-file="../terraform.tfvars"
+    terraform apply
     ```
 
 ## Outputs

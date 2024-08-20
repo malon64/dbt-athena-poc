@@ -1,54 +1,51 @@
 # ECS Infra for Dagster and DBT
 
-This directory contains the Terraform configuration files for deploying a Dagster and DBT application on AWS ECS using Fargate.
-
-## Prerequisites
-
-- Terraform installed
-- AWS CLI installed and configured with appropriate permissions
+This directory contains the Terraform configuration files for deploying a multi-container architecture on AWS ECS using Fargate. The setup includes an Application Load Balancer (ALB) in front of the webserver for managing traffic.
 
 ## Directory Structure
 
 - `vpc.tf`: Defines the VPC, subnets, and internet gateway.
-- `security_groups.tf`: Defines the security groups for ECS.
-- `ecr.tf`: Defines the ECR repository and build/push script.
-- `ecs.tf`: Defines the ECS cluster, task definition, and service.
-- `iam.tf`: Defines the IAM roles and policies.
-- `outputs.tf`: Outputs for the Terraform configuration.
+- `security_groups.tf`: Defines the security groups for ECS and RDS.
+- `ecr.tf`: Defines the ECR repositories and the build/push script.
+- `ecs.tf`: Defines the ECS cluster, task definitions, and services for the webserver, daemon, and user code containers.
+- `iam.tf`: Defines the IAM roles and policies for ECS task execution and access to AWS resources.
+- `rds.tf`: Configures the RDS PostgreSQL instance used for Dagster's persistent storage.
+- `outputs.tf`: Outputs the Terraform configuration, including the DNS link to the webserver.
 - `variables.tf`: Variables for the Terraform configuration.
-- `build_and_push.sh`: Script to build and push the Docker image to ECR.
-- `README.md`: This file.
+- `data.tf`: Retrieves SSM parameters for storing sensitive information.
+- `service_discovery.tf`: Sets up DNS service discovery for the ECS services.
+- `terraform.tfvars`: Stores user-specific variables, such as your IP address for security group configuration.
+- `build_and_push.sh`: Script to build and push the Docker images to ECR.
 
 ## Deployment Steps
 
-1. **Initialize Terraform**
+1. **Configure `terraform.tfvars`**
 
-    Navigate to the `ecs_infra` directory and initialize Terraform.
+   Before applying the Terraform configuration, update the `terraform.tfvars` file in the `ecs_infra` directory with your IP address. This will ensure that your IP address is allowed access through the security group.
 
+   Example `terraform.tfvars`:
+   ```hcl
+   user_ip = "0.0.0.0"
+   ```
+
+2. **Initialize Terraform**
+    Navigate to the ecs_infra directory and initialize Terraform.
     ```bash
     cd ecs_infra
     terraform init
     ```
 
-2. **Apply Terraform Configuration**
-
-    Apply the Terraform configuration to create the necessary AWS resources. Ensure that your `terraform.tfvars` file is located in the root directory of your project.
-
+3. **Apply Terraform Configuration**
+    Apply the Terraform configuration to create the necessary AWS resources. There is no need to specify a variable file as the terraform.tfvars file is already in the directory.
     ```bash
-    terraform apply -var-file="../terraform.tfvars"
+    terraform apply
+    ```
+4. **Accessing the Containerized App**
+
+    After the deployment is complete, Terraform will output a clickable HTTP link to access the Dagster webserver through the ALB.
+
+    Example output:
+    ```bash
+    webserver_dns = "http://<alb-dns-name>"
     ```
 
-3. **Build and Push Docker Image**
-
-    The `build_and_push.sh` script is automatically triggered by Terraform to build and push the Docker image to ECR.
-
-## Accessing the Containerized App
-
-1. **Navigate to the ECS console in the AWS Management Console**.
-2. **Select your ECS cluster** (e.g., `main-cluster`).
-3. **Select the ECS service** (e.g., `dagster-dbt-service`).
-4. **Select the running task**.
-5. **Find the public IP address** assigned to the task under the `Network` section.
-6. **Open your web browser** and navigate to the public IP address of the running task with port 3000 (e.g., `http://<publicIP>:3000`).
-
-    Alternatively, you can find the full URL of the ECS service in the Terraform output after applying the configuration.
