@@ -15,7 +15,7 @@ static_infra/.terraform.tfstate*
 
 # Dbt temp files and logs
 athena_dbt_core/orchestration/tmp*
-athena_dbt_core/orchestration/orchestration/__pycache__
+athena_dbt_core/orchestration/source/__pycache__
 athena_dbt_core/.user.yml
 athena_dbt_core/target/
 athena_dbt_core/dbt_packages/

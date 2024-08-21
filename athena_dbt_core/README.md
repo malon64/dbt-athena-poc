@@ -54,44 +54,9 @@ athena_profile:
 ```
 Ensure that your profiles.yml is correctly set up with the information from your static infrastructure.
 
-## Deploying the Project Locally with Docker Compose
 
-This project can be deployed locally using Docker Compose, which will allow you to run the full Dagster and DBT stack on your local machine.
+## Deployment
 
-### Prerequisites
-
-- Docker installed
-- Docker Compose installed
-
-### Steps to Deploy Locally
-
-1. **Navigate to the `athena_dbt_core` directory**
-
-  Ensure you are in the correct directory:
-  ```bash
-  cd athena_dbt_core
-  ```
-2. **Build and Run the Docker Containers**
-
-  Use Docker Compose to build and run the containers:
-  ```bash
-  docker-compose up --build
-  ```
-  This command will build the images and start all necessary containers, including the Dagster webserver, Dagster daemon, and user code.
-
-3. **Access the Dagster Webserver**
-
-  Once the containers are up and running, you can access the Dagster webserver by navigating to the following URL in your web browser:
-  ```bash
-  http://localhost:3000
-  ```
-  This will give you access to the Dagster UI, where you can manage and execute your DBT pipelines.
-
-**Stopping the Containers**
-
-To stop the running containers, use the following command:
-  ```bash
-  docker-compose down
-  ```
+For deploying the dbt app locally using Dagster, refer to the orchestration folder.
 
 For more details on the orchestration setup with Dagster, refer to the [Dagster Orchestration README](./orchestration/README.md)

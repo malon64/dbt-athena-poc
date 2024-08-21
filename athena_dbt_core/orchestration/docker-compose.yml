@@ -50,6 +50,7 @@ services:
       - dagster-daemon
       - run
     container_name: dagster_daemon
+    image: dagster_image
     restart: on-failure
     environment:
       DB_USERNAME: "postgres_user"
@@ -57,9 +58,11 @@ services:
       DB_NAME: "postgres_db"
       DB_PORT: 5432
       DB_HOST: "docker_postgresql"
+      DAGSTER_INSTANCE_IMAGE: dagster_image
     volumes: # Make docker client accessible so we can launch containers using host docker
       - /var/run/docker.sock:/var/run/docker.sock
       - /tmp/io_manager_storage:/tmp/io_manager_storage
+      - ~/.aws:/root/.aws
     networks:
       - docker_network
     depends_on:
@@ -68,10 +71,10 @@ services:
 
   dagster_user_code:
     build:
-      context: .
-      dockerfile: ./Dockerfile_code
+      context: ../
+      dockerfile: orchestration/Dockerfile_code
     container_name: dagster_user_code
-    image: dagster_user_code
+    image: dagster_user_code_image
     restart: always
     expose:
       - "4000"
@@ -81,7 +84,7 @@ services:
       DB_NAME: "postgres_db"
       DB_PORT: 5432
       DB_HOST: "docker_postgresql"
-      DAGSTER_CURRENT_IMAGE: "dagster_user_code"
+      DAGSTER_CURRENT_IMAGE: "dagster_user_code_image"
     networks:
       - docker_network
     depends_on:
