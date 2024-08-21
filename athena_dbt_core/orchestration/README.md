@@ -37,13 +37,13 @@ This guide will walk you through deploying the Dagster project locally using Doc
 
 ### Prerequisites
 
-1. **AWS CLI Configuration**: Ensure that you have AWS CLI installed and configured with the correct credentials. Run the following command:
+**AWS CLI Configuration**: Ensure that you have AWS CLI installed and configured with the correct credentials. Run the following command:
 ```bash
 aws configure
 ```
 Enter your AWS Access Key ID, Secret Access Key, and region as prompted.
 
-2. **Build Docker Images**: Make sure that the Docker images for the Dagster webserver, daemon, and user code have been built. If not, follow the instructions in the `ecs_infra` folder to build and push the images.
+Also you'll need Docker and docker-compose installed.
 
 ### Update Configuration Files
 
