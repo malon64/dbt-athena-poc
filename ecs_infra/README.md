@@ -34,8 +34,17 @@ This directory contains the Terraform configuration files for deploying a multi-
     cd ecs_infra
     terraform init
     ```
+3. **Set up SSM paramters**
 
-3. **Apply Terraform Configuration**
+      Before deploying the infrastructure, ensure that you have the following SSM parameters set up in the AWS SSM Parameter Store:
+
+   - /dev/dagster/postgres/DB_NAME
+   - /dev/dagster/postgres/DB_USERNAME
+   - /dev/dagster/postgres/DB_PASSWORD (encrypted)
+
+   These parameters will be used to configure the Postgres database for the Dagster instance.
+
+4. **Apply Terraform Configuration**
     Apply the Terraform configuration to create the necessary AWS resources. There is no need to specify a variable file as the terraform.tfvars file is already in the directory.
     ```bash
     terraform apply

@@ -14,7 +14,3 @@ data "aws_ssm_parameter" "db_username" {
 data "aws_ssm_parameter" "db_password" {
   name = "/dev/dagster/postgres/DB_PASSWORD"
 }
-
-data "aws_ssm_parameter" "db_port" {
-  name = "/dev/dagster/postgres/DB_PORT"
-}

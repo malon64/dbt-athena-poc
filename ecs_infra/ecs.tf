@@ -117,7 +117,7 @@ resource "aws_ecs_task_definition" "dagster_webserver" {
         { name = "DB_HOST", value = aws_db_instance.dagster_postgres.address },
         { name = "DB_NAME", value = data.aws_ssm_parameter.db_name.value },
         { name = "DB_USERNAME", value = data.aws_ssm_parameter.db_username.value },
-        { name = "DB_PORT", value = data.aws_ssm_parameter.db_port.value }
+        { name = "DB_PORT", value = 5432 }
       ]
       secrets = [
         { name = "DB_PASSWORD", valueFrom = data.aws_ssm_parameter.db_password.arn }
@@ -156,7 +156,7 @@ resource "aws_ecs_task_definition" "dagster_daemon" {
         { name = "DB_HOST", value = aws_db_instance.dagster_postgres.address },
         { name = "DB_NAME", value = data.aws_ssm_parameter.db_name.value },
         { name = "DB_USERNAME", value = data.aws_ssm_parameter.db_username.value },
-        { name = "DB_PORT", value = data.aws_ssm_parameter.db_port.value },
+        { name = "DB_PORT", value = 5432 },
         { name = "DAGSTER_INSTANCE_IMAGE", value = "${aws_ecr_repository.dagster_app.repository_url}:latest" }
 
       ]
@@ -193,7 +193,7 @@ resource "aws_ecs_task_definition" "dagster_user_code" {
         { name = "DB_HOST", value = aws_db_instance.dagster_postgres.address },
         { name = "DB_NAME", value = data.aws_ssm_parameter.db_name.value },
         { name = "DB_USERNAME", value = data.aws_ssm_parameter.db_username.value },
-        { name = "DB_PORT", value = data.aws_ssm_parameter.db_port.value },
+        { name = "DB_PORT", value = 5432 },
         { name = "DAGSTER_CURRENT_IMAGE", value = "${aws_ecr_repository.dagster_user_code.repository_url}:latest" }
       ]
       secrets = [
