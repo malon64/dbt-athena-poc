@@ -44,12 +44,39 @@ This directory contains the Terraform configuration files for deploying a multi-
 
    These parameters will be used to configure the Postgres database for the Dagster instance.
 
-4. **Apply Terraform Configuration**
+4. **Get the correct Dagster config in `athena_dbt_core/orchestration/`**
+
+    You need to have this config in `workspace.yaml`:
+    ```yaml
+    load_from:
+    - grpc_server:
+        host: "dagster-usercode.main-cluster.local"
+        port: 4000
+        location_name: "user_code_location"
+    ```
+    And this run_launcher config in `dagster.yaml`:
+    ```yaml
+    run_launcher:
+        module: dagster_aws.ecs
+        class: EcsRunLauncher
+        config:
+            # Optionally, specify the container name (defaults to 'run')
+            container_name: "dagster_run"
+
+            # Whether to include sidecars in the launched tasks
+            include_sidecars: true
+
+            # Use the current ECS task configuration for launching new tasks
+            use_current_ecs_task_config: true
+            secrets_tag: ""
+    ```
+
+5. **Apply Terraform Configuration**
     Apply the Terraform configuration to create the necessary AWS resources. There is no need to specify a variable file as the terraform.tfvars file is already in the directory.
     ```bash
     terraform apply
     ```
-4. **Accessing the Containerized App**
+6. **Accessing the Containerized App**
 
     After the deployment is complete, Terraform will output a clickable HTTP link to access the Dagster webserver through the ALB.
 
