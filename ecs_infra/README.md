@@ -44,7 +44,7 @@ This directory contains the Terraform configuration files for deploying a multi-
 
    These parameters will be used to configure the Postgres database for the Dagster instance.
 
-4. **Get the correct Dagster config in `athena_dbt_core/orchestration/`**
+4. **Get the correct Dagster config in `dbt_code/orchestration/`**
 
     You need to have this config in `workspace.yaml`:
     ```yaml

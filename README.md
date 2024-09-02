@@ -2,9 +2,9 @@
 
 This project is divided into three parts to set up and deploy a data pipeline using DBT and Dagster on AWS ECS with Fargate. The three parts are:
 
-1. **static_infra**: Sets up the database and S3 bucket required for the project.
-2. **athena_dbt_core**: Contains the DBT code for loading and transforming data, along with a Dagster project to orchestrate the DBT pipeline.
-3. **ecs_infra**: Dockerizes the `athena_dbt_core` project and deploys it on AWS ECS.
+1. **athena_infra**: Sets up the database and S3 bucket required for the project.
+2. **dbt_code**: Contains the DBT code for loading and transforming data, along with a Dagster project to orchestrate the DBT pipeline.
+3. **ecs_infra**: Dockerizes the `dbt_code` project and deploys it on AWS ECS.
 
 ## Prerequisites
 
@@ -15,18 +15,18 @@ This project is divided into three parts to set up and deploy a data pipeline us
 
 ## Project Structure
 
-- `static_infra/`: Contains Terraform configuration for setting up AWS Athena and S3 bucket.
-- `athena_dbt_core/`: Contains DBT models and Dagster orchestration code.
+- `athena_infra/`: Contains Terraform configuration for setting up AWS Athena and S3 bucket.
+- `dbt_code/`: Contains DBT models and Dagster orchestration code.
 - `ecs_infra/`: Contains Terraform configuration for deploying the containerized DBT and Dagster project on ECS.
 
 ## Setting Up the Environment
 
 1. **Deploy Static Infrastructure**
 
-    First, set up the AWS Athena database and S3 bucket, which are essential for the project. Navigate to the static_infra directory and apply the Terraform configuration:
+    First, set up the AWS Athena database and S3 bucket, which are essential for the project. Navigate to the athena_infra directory and apply the Terraform configuration:
 
     ```bash
-    cd static_infra
+    cd athena_infra
     terraform init
     terraform apply
     ```
@@ -40,10 +40,10 @@ This project is divided into three parts to set up and deploy a data pipeline us
     source dbt-env/bin/activate  # On Windows use `dbt-env\Scripts\activate`
     ```
 
-    With the virtual environment activated, navigate to the athena_dbt_core directory and install the required packages:
+    With the virtual environment activated, navigate to the dbt_code directory and install the required packages:
 
     ```bash
-    cd athena_dbt_core
+    cd dbt_code
     pip install -r requirements.txt
     ```
 
@@ -55,10 +55,10 @@ This project is divided into three parts to set up and deploy a data pipeline us
 
 3. **Deploy Local Orchestration with Dagster**
 
-    Next, you can set up a local instance of Dagster to orchestrate the DBT pipeline. This is done within the athena_dbt_core/orchestration directory:
+    Next, you can set up a local instance of Dagster to orchestrate the DBT pipeline. This is done within the dbt_code/orchestration directory:
 
     ```bash
-    cd athena_dbt_core/orchestration
+    cd dbt_code/orchestration
     # Follow the instructions in the README.md to configure and run Dagster locally
     ```
 
@@ -76,8 +76,8 @@ This project is divided into three parts to set up and deploy a data pipeline us
 
 For more detailed instructions on each part of the project, please refer to the `README.md` files located in each respective directory:
 
-[Static Infrastructure](./static_infra/)
+[Static Infrastructure](./athena_infra/)
 
-[DBT Project with Dagster orchestration](./athena_dbt_core/)
+[DBT Project with Dagster orchestration](./dbt_code/)
 
 [Dynamic infrastructure](./ecs_infra/)

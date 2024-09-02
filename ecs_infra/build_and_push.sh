@@ -22,8 +22,8 @@ aws ecr get-login-password --region $REGION | docker login --username AWS --pass
 aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REPO_USER_CODE
 
 # Build the Docker images
-docker build -t dagster-app:latest -f ../athena_dbt_core/orchestration/Dockerfile_dagster ../athena_dbt_core/orchestration
-docker build -t dagster-user-code:latest -f ../athena_dbt_core/orchestration/Dockerfile_code ../athena_dbt_core
+docker build -t dagster-app:latest -f ../dbt_code/orchestration/Dockerfile_dagster ../dbt_code/orchestration
+docker build -t dagster-user-code:latest -f ../dbt_code/orchestration/Dockerfile_code ../dbt_code
 
 # Tag the Docker images
 docker tag dagster-app:latest $ECR_REPO_APP:latest

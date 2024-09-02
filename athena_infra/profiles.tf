@@ -8,6 +8,6 @@ resource "local_file" "profiles" {
     s3_data_dir = "s3://${var.s3_bucket_name}/data/"
     s3_staging_dir = "s3://${var.s3_bucket_name}/staging/"
   })
-  filename = "${path.module}/../athena_dbt_core/profiles.yml"
+  filename = "${path.module}/../dbt_code/profiles.yml"
 }
 

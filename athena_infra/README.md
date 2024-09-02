@@ -22,10 +22,10 @@ This directory contains the Terraform configuration files for setting up the sta
 
 1. **Initialize Terraform**
 
-    Navigate to the `static_infra` directory and initialize Terraform.
+    Navigate to the `athena_infra` directory and initialize Terraform.
 
     ```bash
-    cd static_infra
+    cd athena_infra
     terraform init
     ```
 

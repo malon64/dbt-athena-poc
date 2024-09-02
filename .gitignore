@@ -8,18 +8,18 @@ logs/
 tmp*/
 
 # Terraform temp files and states
-static_infra/.terraform
-static_infra/.terraform.lock.hcl
-static_infra/terraform.tfstate*
-static_infra/.terraform.tfstate*
+athena_infra/.terraform
+athena_infra/.terraform.lock.hcl
+athena_infra/terraform.tfstate*
+athena_infra/.terraform.tfstate*
 
 # Dbt temp files and logs
-athena_dbt_core/orchestration/tmp*
-athena_dbt_core/orchestration/source/__pycache__
-athena_dbt_core/.user.yml
-athena_dbt_core/target/
-athena_dbt_core/dbt_packages/
-athena_dbt_core/logs/
+dbt_code/orchestration/tmp*
+dbt_code/orchestration/source/__pycache__
+dbt_code/.user.yml
+dbt_code/target/
+dbt_code/dbt_packages/
+dbt_code/logs/
 
 # Terraform temp files
 ecs_infra/.terraform

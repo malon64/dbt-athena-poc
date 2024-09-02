@@ -1,4 +1,4 @@
-athena_dbt_core:
+dbt_code:
   target: dev
   outputs:
     dev:
