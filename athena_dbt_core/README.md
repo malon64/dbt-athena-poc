@@ -5,8 +5,12 @@ This project is organized to transform and analyze data using dbt, with orchestr
 ## Using the Starter Project
 
 Try running the following commands:
-- `dbt run`
-- `dbt test`
+
+- `dbt run`: Executes your dbt models, creating or updating tables and views in your data warehouse. This command handles both full model builds and incremental updates, processing only new or changed data for incremental models.
+
+- `dbt test`: Runs your data quality tests, ensuring that the data meets defined standards, like uniqueness or not null constraints, before it's used downstream.
+
+- `dbt run --full-refresh`: Forces a complete rebuild of incremental models, dropping and recreating them from scratch. Use this when you need to reset an incremental model after changes in data or logic.
 
 ## How dbt Works
 
@@ -59,4 +63,4 @@ Ensure that your profiles.yml is correctly set up with the information from your
 
 For deploying the dbt app locally using Dagster, refer to the orchestration folder.
 
-For more details on the orchestration setup with Dagster, refer to the [Dagster Orchestration README](./orchestration/README.md)
+For more details on the orchestration setup with Dagster, refer to the [Dagster Orchestration README](./orchestration/)

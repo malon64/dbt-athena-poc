@@ -21,60 +21,63 @@ This project is divided into three parts to set up and deploy a data pipeline us
 
 ## Setting Up the Environment
 
-1. **Create a Python Virtual Environment**
+1. **Deploy Static Infrastructure**
 
-    Navigate to the root directory of the project and create a virtual environment:
+    First, set up the AWS Athena database and S3 bucket, which are essential for the project. Navigate to the static_infra directory and apply the Terraform configuration:
+
+    ```bash
+    cd static_infra
+    terraform init
+    terraform apply
+    ```
+
+2. **Configure and Test DBT Models Locally**
+
+    Once the static infrastructure is set up, you can explore and run the DBT models locally. Begin by setting up a Python virtual environment:
 
     ```bash
     python3.10 -m venv dbt-env
     source dbt-env/bin/activate  # On Windows use `dbt-env\Scripts\activate`
     ```
 
-2. **Install DBT and Dagster**
-
-    With the virtual environment activated, navigate to the `athena_dbt_core` directory and install the required packages:
+    With the virtual environment activated, navigate to the athena_dbt_core directory and install the required packages:
 
     ```bash
     cd athena_dbt_core
     pip install -r requirements.txt
     ```
 
-## Deployment Steps
+    You can now test the DBT models by running them against the Athena database:
 
-### 1. Deploy Static Infrastructure
+    ```bash
+    dbt run # or dbt run --full-refresh
+    ```
 
-Navigate to the `static_infra` directory and follow the steps outlined in its `README.md` to set up the AWS Athena database and S3 bucket.
+3. **Deploy Local Orchestration with Dagster**
 
-```bash
-cd static_infra
-terraform init
-terraform apply
-```
-### 2. Configure and Test DBT and Dagster
+    Next, you can set up a local instance of Dagster to orchestrate the DBT pipeline. This is done within the athena_dbt_core/orchestration directory:
 
-Navigate to the athena_dbt_core directory to configure and test the DBT models and Dagster orchestration. Refer to the `README.md` in athena_dbt_core for detailed instructions.
+    ```bash
+    cd athena_dbt_core/orchestration
+    # Follow the instructions in the README.md to configure and run Dagster locally
+    ```
 
-```bash
-cd athena_dbt_core
-# Follow the instructions in the athena_dbt_core README.md
-```
+4. **Deploy the Containerized Application on ECS**
 
-### 3. Deploy the Containerized Application on ECS
+    If you want to deploy the entire orchestration setup on AWS, navigate to the ecs_infra directory and apply the Terraform configuration to build the Docker image and deploy it on ECS:
 
-Navigate to the ecs_infra directory and follow the steps outlined in its `README.md` to build the Docker image and deploy it on ECS.
-
-```bash
-cd ecs_infra
-terraform init
-terraform apply
-```
+    ```bash
+    cd ecs_infra
+    # Follow the instructions in the README.md to configure and run Dagster in AWS
+    ```
+    This will set up the multi-container architecture on AWS, allowing you to run your DBT and Dagster workflows in a fully managed environment. 
 
 ## Further Details
 
 For more detailed instructions on each part of the project, please refer to the `README.md` files located in each respective directory:
 
-[Static Infrastructure](./static_infra/README.md)
+[Static Infrastructure](./static_infra/)
 
-[DBT Project with Dagster orchestration](./athena_dbt_core/README.md)
+[DBT Project with Dagster orchestration](./athena_dbt_core/)
 
-[Dynamic infrastructure](./ecs_infra/README.md)
+[Dynamic infrastructure](./ecs_infra/)
