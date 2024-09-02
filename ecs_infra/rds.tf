@@ -12,7 +12,7 @@ resource "aws_db_instance" "dagster_postgres" {
   db_name                = data.aws_ssm_parameter.db_name.value
   username               = data.aws_ssm_parameter.db_username.value
   password               = data.aws_ssm_parameter.db_password.value
-  port                   = data.aws_ssm_parameter.db_port.value
+  port                   = 5432
   db_subnet_group_name   = aws_db_subnet_group.dagster.name
   publicly_accessible    = true
   skip_final_snapshot    = true
