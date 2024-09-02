@@ -13,6 +13,7 @@ This directory contains the Terraform configuration files for setting up the sta
 - `s3.tf`: Defines the S3 bucket.
 - `athena.tf`: Defines the Athena database.
 - `iam.tf`: Defines the IAM roles and policies.
+- `profiles.tf`: Write the profiles.yml file used by dbt to connect with the database
 - `variables.tf`: Variables for the Terraform configuration.
 - `outputs.tf`: Outputs for the Terraform configuration.
 - `terraform.tfvars`: Contains the value for the AWS region variable.
