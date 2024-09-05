@@ -18,5 +18,5 @@ variable "app_environment" {
 
 variable "user_ip" {
   description = "User own IP to access the webserver from"
-  type = string
+  type        = string
 }

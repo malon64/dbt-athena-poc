@@ -7,11 +7,12 @@ resource "aws_cloudwatch_log_group" "ecs_log_group" {
   retention_in_days = 7
 }
 resource "aws_ecs_service" "dagster_webserver_service" {
-  name            = "${var.app_name}-webserver"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.dagster_webserver.arn
-  desired_count   = 1
-  launch_type     = "FARGATE"
+  name                 = "${var.app_name}-webserver"
+  cluster              = aws_ecs_cluster.main.id
+  task_definition      = aws_ecs_task_definition.dagster_webserver.arn
+  desired_count        = 1
+  launch_type          = "FARGATE"
+  force_new_deployment = true
 
   network_configuration {
     subnets          = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
@@ -28,20 +29,21 @@ resource "aws_ecs_service" "dagster_webserver_service" {
     registry_arn = aws_service_discovery_service.dagster_webserver_service.arn
   }
   lifecycle {
-    ignore_changes        = [desired_count, task_definition]
+    ignore_changes        = [desired_count]
     create_before_destroy = true
   }
   triggers = {
-    redeployment = plantimestamp()
+    redeployment = local.dagster_app_md5
   }
 }
 
 resource "aws_ecs_service" "dagster_daemon_service" {
-  name            = "${var.app_name}-daemon"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.dagster_daemon.arn
-  desired_count   = 1
-  launch_type     = "FARGATE"
+  name                 = "${var.app_name}-daemon"
+  cluster              = aws_ecs_cluster.main.id
+  task_definition      = aws_ecs_task_definition.dagster_daemon.arn
+  desired_count        = 1
+  launch_type          = "FARGATE"
+  force_new_deployment = true
 
   network_configuration {
     subnets          = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
@@ -52,20 +54,21 @@ resource "aws_ecs_service" "dagster_daemon_service" {
     registry_arn = aws_service_discovery_service.dagster_daemon_service.arn
   }
   lifecycle {
-    ignore_changes        = [desired_count, task_definition]
+    ignore_changes        = [desired_count]
     create_before_destroy = true
   }
   triggers = {
-    redeployment = plantimestamp()
+    redeployment = local.dagster_app_md5
   }
 }
 
 resource "aws_ecs_service" "dagster_usercode_service" {
-  name            = "${var.app_name}-usercode"
-  cluster         = aws_ecs_cluster.main.id
-  task_definition = aws_ecs_task_definition.dagster_user_code.arn
-  desired_count   = 1
-  launch_type     = "FARGATE"
+  name                 = "${var.app_name}-usercode"
+  cluster              = aws_ecs_cluster.main.id
+  task_definition      = aws_ecs_task_definition.dagster_user_code.arn
+  desired_count        = 1
+  launch_type          = "FARGATE"
+  force_new_deployment = true
 
   network_configuration {
     subnets          = [aws_subnet.subnet_a.id, aws_subnet.subnet_b.id]
@@ -76,11 +79,11 @@ resource "aws_ecs_service" "dagster_usercode_service" {
     registry_arn = aws_service_discovery_service.dagster_usercode_service.arn
   }
   lifecycle {
-    ignore_changes        = [desired_count, task_definition]
+    ignore_changes        = [desired_count]
     create_before_destroy = true
   }
   triggers = {
-    redeployment = plantimestamp()
+    redeployment = local.user_code_md5
   }
 }
 
@@ -97,7 +100,7 @@ resource "aws_ecs_task_definition" "dagster_webserver" {
   container_definitions = jsonencode([
     {
       name      = "${var.app_name}-webserver"
-      image     = "${aws_ecr_repository.dagster_app.repository_url}:latest"
+      image     = "${aws_ecr_repository.dagster_app.repository_url}:${local.dagster_app_md5}"
       essential = true
       entryPoint = [
         "dagster-webserver",
@@ -132,6 +135,7 @@ resource "aws_ecs_task_definition" "dagster_webserver" {
       }
     }
   ])
+  depends_on = [null_resource.build_and_push_dagster_app]
 }
 
 resource "aws_ecs_task_definition" "dagster_daemon" {
@@ -146,7 +150,7 @@ resource "aws_ecs_task_definition" "dagster_daemon" {
   container_definitions = jsonencode([
     {
       name      = "${var.app_name}-daemon"
-      image     = "${aws_ecr_repository.dagster_app.repository_url}:latest"
+      image     = "${aws_ecr_repository.dagster_app.repository_url}:${local.dagster_app_md5}"
       essential = true
       entryPoint = [
         "dagster-daemon",
@@ -157,7 +161,7 @@ resource "aws_ecs_task_definition" "dagster_daemon" {
         { name = "DB_NAME", value = data.aws_ssm_parameter.db_name.value },
         { name = "DB_USERNAME", value = data.aws_ssm_parameter.db_username.value },
         { name = "DB_PORT", value = "5432" },
-        { name = "DAGSTER_INSTANCE_IMAGE", value = "${aws_ecr_repository.dagster_app.repository_url}:latest" }
+        { name = "DAGSTER_INSTANCE_IMAGE", value = "${aws_ecr_repository.dagster_app.repository_url}:${local.dagster_app_md5}" }
 
       ]
       secrets = [
@@ -173,6 +177,7 @@ resource "aws_ecs_task_definition" "dagster_daemon" {
       }
     }
   ])
+  depends_on = [null_resource.build_and_push_dagster_app]
 }
 
 resource "aws_ecs_task_definition" "dagster_user_code" {
@@ -187,14 +192,14 @@ resource "aws_ecs_task_definition" "dagster_user_code" {
   container_definitions = jsonencode([
     {
       name      = "${var.app_name}-user-code"
-      image     = "${aws_ecr_repository.dagster_user_code.repository_url}:latest"
+      image     = "${aws_ecr_repository.dagster_user_code.repository_url}:${local.user_code_md5}"
       essential = true
       environment = [
         { name = "DB_HOST", value = aws_db_instance.dagster_postgres.address },
         { name = "DB_NAME", value = data.aws_ssm_parameter.db_name.value },
         { name = "DB_USERNAME", value = data.aws_ssm_parameter.db_username.value },
         { name = "DB_PORT", value = "5432" },
-        { name = "DAGSTER_CURRENT_IMAGE", value = "${aws_ecr_repository.dagster_user_code.repository_url}:latest" }
+        { name = "DAGSTER_CURRENT_IMAGE", value = "${aws_ecr_repository.dagster_user_code.repository_url}:${local.user_code_md5}" }
       ]
       secrets = [
         { name = "DB_PASSWORD", valueFrom = data.aws_ssm_parameter.db_password.arn }
@@ -216,4 +221,5 @@ resource "aws_ecs_task_definition" "dagster_user_code" {
       }
     }
   ])
+  depends_on = [null_resource.build_and_push_user_code]
 }

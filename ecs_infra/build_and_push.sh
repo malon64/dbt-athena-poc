@@ -4,8 +4,11 @@
 set -e
 
 # Variables
-ECR_REPO_APP=$1
-ECR_REPO_USER_CODE=$2
+IMAGE_NAME=$1
+ECR_REPO=$2
+IMAGE_TAG=$3
+DOCKERFILE_PATH=$4
+CONTEXT_PATH=$5
 REGION="eu-west-1"
 
 # Check if Docker is available
@@ -18,17 +21,13 @@ fi
 export DOCKER_BUILDKIT=0
 
 # Authenticate Docker to ECR
-aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REPO_APP
-aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REPO_USER_CODE
+aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REPO
 
 # Build the Docker images
-docker build -t dagster-app:latest -f ../dbt_code/orchestration/Dockerfile_dagster ../dbt_code/orchestration
-docker build -t dagster-user-code:latest -f ../dbt_code/orchestration/Dockerfile_code ../dbt_code
+docker build -t $IMAGE_NAME:$IMAGE_TAG -f $DOCKERFILE_PATH $CONTEXT_PATH
 
 # Tag the Docker images
-docker tag dagster-app:latest $ECR_REPO_APP:latest
-docker tag dagster-user-code:latest $ECR_REPO_USER_CODE:latest
+docker tag $IMAGE_NAME:$IMAGE_TAG $ECR_REPO:$IMAGE_TAG
 
 # Push the Docker images to ECR
-docker push $ECR_REPO_APP:latest
-docker push $ECR_REPO_USER_CODE:latest
+docker push $ECR_REPO:$IMAGE_TAG
