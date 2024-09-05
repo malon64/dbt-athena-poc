@@ -3,8 +3,8 @@ provider "aws" {
   region = var.aws_region
   default_tags {
     tags = {
-      System = "DAGSTER"
-      Environment = "DEV"
+      System      = "dagster"
+      Environment = var.app_environment
     }
   }
 
