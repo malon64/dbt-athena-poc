@@ -5,7 +5,7 @@ resource "aws_iam_role" "dbt_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect    = "Allow"
+        Effect = "Allow"
         Principal = {
           Service = "athena.amazonaws.com"
         }
@@ -23,8 +23,8 @@ resource "aws_iam_policy" "dbt_policy" {
     Version = "2012-10-17"
     Statement = [
       {
-        Effect   = "Allow"
-        Action   = [
+        Effect = "Allow"
+        Action = [
           "s3:ListBucket",
           "s3:GetObject",
           "s3:PutObject",
